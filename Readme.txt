@@ -2,6 +2,7 @@
 Contributors: meganiche
 Donate link: https://www.paypal.com/us/cgi-bin/webscr?cmd=_flow&SESSION=QJhG81YrmuzQizsvJZap3OsSHxpeiXZ2gHMWoAuFItx2CUt4C25Cxws4jju&dispatch=5885d80a13c0db1f8e263663d3faee8d7283e7f0184a5674430f290db9e9c846
 Tags: google reviews, counter generator, google, reviews, counter, generator
+Plugin Name: google_reviews_counter_generator
 Requires at least: 3.3
 Tested up to: 3.4
 Stable tag: 4.3
