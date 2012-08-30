@@ -48,7 +48,7 @@ Yes it does. Google Plus is slowly taking over google maps and all existing revi
 
 == Changelog ==
 
-Version 1.1 is our first public release
+Version 1.1.2 is our first public release
 
 == Upgrade notice ==
 

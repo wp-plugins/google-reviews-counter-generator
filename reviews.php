@@ -14,7 +14,7 @@ Plugin URI: http://meganicheuniversity.com/wordpress-plugins
 
 Description: Plugin to count reviews.
 
-Version: 1.1
+Version: 1.1.2
 
 Author: MegaNiche
 
