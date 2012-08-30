@@ -332,7 +332,7 @@ class Widget_name
 
 			echo '<div class="reviews_box">
 	  	<a href="'.$value.'" class="name_link" target="_blank">'.$fields[$key].'</a>
-	  	<div class="reviews_count"><span id="reviews_count_'.$key.'"><!--<img src="'.get_option('siteurl').'/wp-content/plugins/google_reviews_counter_generator/ajax-loader.gif"/>-->';
+	  	<div class="reviews_count"><span id="reviews_count_'.$key.'">';
 		
 		if($key != 'google_maps')
 		{
@@ -340,7 +340,7 @@ class Widget_name
 		}
 		else
 		{
-			echo '<iframe src="http://'.$_SERVER['HTTP_HOST'].'/wp-content/plugins/google_reviews_counter_generator/google_maps.php" height="17px" width="40px" scrolling="no" style="border:0px"></iframe>';
+			echo '<iframe src="'.plugins_url().'/google-reviews-counter-generator/google_maps.php" height="17px" width="40px" scrolling="no" style="border:0px"></iframe>';
 		}
 		
 		echo '</span><br>
