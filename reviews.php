@@ -14,7 +14,7 @@ Plugin URI: http://meganicheuniversity.com/wordpress-plugins
 
 Description: Plugin to count reviews.
 
-Version: 1.1.2
+Version: 2.0
 
 Author: MegaNiche
 
@@ -63,7 +63,6 @@ function jal_install()
 				'yellow_pages' => 'Yellow Pages Link',
 				'merchant_circle' => 'Merchant Circle Link',
 				'local_com' => 'Local.com Link',
-				'judy' => 'JudysBook Link',
 				'kudzu' => 'Kudzu Link',
 			);
 		foreach($fields as $key =>$txt)
@@ -135,7 +134,6 @@ function plugin_menu_page()
 			'yellow_pages' => 'Yellow Pages Link',
 			'merchant_circle' => 'Merchant Circle Link',
 			'local_com' => 'Local.com Link',
-			'judy' => 'JudysBook Link',
 			'kudzu' => 'Kudzu Link',
 		);
 		$fields_check = array(
@@ -145,7 +143,6 @@ function plugin_menu_page()
 			'yellow_pages' => 'yellowpages',
 			'merchant_circle' => 'merchantcircle',
 			'local_com' => 'local.com',
-			'judy' => 'judy',
 			'kudzu' => 'kudzu',
 		);
 		?>
@@ -201,7 +198,6 @@ function plugin_admin_init()
 			'yellow_pages' => 'Yellow Pages Link',
 			'merchant_circle' => 'Merchant Circle Link',
 			'local_com' => 'Local.com Link',
-			'judy' => 'JudysBook Link',
 			'kudzu' => 'Kudzu Link',
 		);
 	foreach($fields as $key =>$txt)
@@ -251,36 +247,42 @@ function plugin_options_validate($input)
 	return $newinput;
 }
 
-add_action("widgets_init", array('Widget_name', 'register'));
-register_deactivation_hook( __FILE__, array('Widget_name', 'deactivate'));
 
-class Widget_name 
+class GoogleReviewsCounterWidget extends WP_Widget
 {
-	function activate()
-	{
-		$data = array( 'option1' => 'Default value' ,'option2' => 55);
-		if ( ! get_option('widget_name'))
-		{
-			add_option('widget_name' , $data);
-		} 
-		else 
-		{
-		  update_option('widget_name' , $data);
-		}
+  	function GoogleReviewsCounterWidget()
+  	{
+    	$widget_ops = array('classname' => 'GoogleReviewsCounterWidget', 'description' => 'Plugin to count reviews' );
+    	$this->WP_Widget('GoogleReviewsCounterWidget', 'Google Reviews Counter', $widget_ops);
   	}
-  	
-	function deactivate()
-	{
-    	delete_option('widget_name');
-    	delete_option('plugin_options');
+ 
+  	function form($instance)
+  	{
+    	$instance = wp_parse_args( (array) $instance, array( 'size' => '190' ) );
+    	$size = $instance['size'];
+		?>
+  			<p>
+            	<label for="<?php echo $this->get_field_id('size'); ?>">Select widget width: : 
+                    <br />
+                    <br />
+                    <input id="<?php echo $this->get_field_id('size'); ?>_250" name="<?php echo $this->get_field_name('size'); ?>" type="radio" value="250" <?php echo ((attribute_escape($size) == '250')?'checked':''); ?> /> 250px
+                    <br />
+                    <input id="<?php echo $this->get_field_id('size'); ?>_190" name="<?php echo $this->get_field_name('size'); ?>" type="radio" value="190" <?php echo ((attribute_escape($size) == '190')?'checked':''); ?>  /> 190px
+                    <br />
+                    <input id="<?php echo $this->get_field_id('size'); ?>_130" name="<?php echo $this->get_field_name('size'); ?>" type="radio" value="130" <?php echo ((attribute_escape($size) == '130')?'checked':''); ?>  /> 130px
+				</label>
+			</p>
+		<?php
   	}
-	function control()
-	{
-  		$data = get_option('widget_name');
-	}
-
-
-  	function widget($args)
+ 
+  	function update($new_instance, $old_instance)
+  	{
+    	$instance = $old_instance;
+    	$instance['size'] = $new_instance['size'];
+    	return $instance;
+  	}
+ 
+  	function widget($args, $instance)
   	{
 		global $payment_domain;
 		global $wpdb;
@@ -288,6 +290,7 @@ class Widget_name
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 	
 		$widoption = get_option('plugin_options');
+		$size = empty($instance['size']) ? ' ' : apply_filters('widget_size', $instance['size']);
 		$fields = array(
 				'google_maps' => 'Google Maps',
 				'yelp' => 'Yelp',
@@ -295,66 +298,56 @@ class Widget_name
 				'yellow_pages' => 'Yellow Pages',
 				'merchant_circle' => 'Merchant Circle',
 				'local_com' => 'Local.com',
-				'judy' => 'JudysBook',
 				'kudzu' => 'Kudzu',
-			);
+			);			
+		
 		echo '
-		<style>
-.name_link { float:left; width:65%; font-family:arial; padding-top: 9px; color:#999999;font-size: 13px;font-weight:bold;}
-.name_link:hover { color:#FFF;text-decoration:none}
-.name_link:visited { text-decoration:none; color:#999999;}
-.reviews_count{ float:right; width:35%; text-align:center; font-family:arial; font-size:22px; color:#009900;line-height:17px;}
-.reviews_box {background-color:#000000; color:#CCCCCC; width:100%; padding:5px; border-radius:5px; float:left; margin-bottom:4px;margin-left:-5px;}
-.reviews_heading{font-family:arial; font-size:22px; color:#333333; margin-bottom: 6px; margin-top: -2px;}
-</style>
-<div style=" min-width: 175px; background-color:#b6b6b6; padding: 15px 8px 15px;">
-	<div style="background-color:#CCCCCC; padding:10px; float: left;width:90%;">
-	  <p align="center" class="reviews_heading">Online Reviews</p>
-	  ';
-		if(is_array($widoption))
-		foreach( $widoption as $key=>$value) 
-		{
-			$conf = mysql_query("SELECT * FROM $table_name WHERE url_key='".$key."'");
-			$conf = mysql_fetch_object($conf);
-			$options = get_option('plugin_options');
-			if($conf->active == '0')
+		<link href="'.plugins_url().'/google-reviews-counter-generator/css/reviews.css" type="text/css" rel="stylesheet" />
+		<div class="reviews_box size_'.$size.'">
+			<div class="reviews_header">
+				<h1>Online Reviews Counter</h1>
+			</div>
+			<div class="reviews_content">';
+			
+			if(is_array($widoption))
+			foreach( $widoption as $key=>$value) 
 			{
-				continue;
+				$conf = mysql_query("SELECT * FROM $table_name WHERE url_key='".$key."'");
+				$conf = mysql_fetch_object($conf);
+				$options = get_option('plugin_options');
+				if($conf->active == '0')
+				{
+					continue;
+				}
+				if(!isset($widoption[$key]))
+				{
+					continue;
+				}
+				elseif($widoption[$key] == '')
+				{
+					continue;
+				}
+	
+				echo '
+				<div class="content_review_row">
+					<a href="'.$value.'" target="_blank"><img src="'.plugins_url().'/google-reviews-counter-generator/logos/'.$key.(($size=='130')?'_s':'_m').'.jpg" /></a>
+					<P><div class="rev_cnt"><span class="rev_txt"><a  href="'.$value.'" target="_blank" id="reviews_count_'.$key.'">Reviews</a></span><span class="rev_num">';
+			
+					if($key != 'google_maps')
+					{
+						echo '<iframe src="http://'.$payment_domain.'/reviews_counter/'.$key.'.php?url='.str_replace('#', '---', str_replace('?', '___', str_replace('&', '__', $value))).'&domain='.str_replace('www.', '', $_SERVER['HTTP_HOST']).'" height="17px" width="'.(($size=='250')?'37':'23').'px" scrolling="no" style="border:0px;"></iframe>';
+					}
+					else
+					{
+						echo '<iframe src="'.plugins_url().'/google-reviews-counter-generator/google_maps.php" height="17px" width="'.(($size=='250')?'37':'23').'px" scrolling="no" style="border:0px"></iframe>';
+					}
+					
+					echo '</span></div></P>
+				</div>';
 			}
-			if(!isset($widoption[$key]))
-			{
-				continue;
-			}
-			elseif($widoption[$key] == '')
-			{
-				continue;
-			}
-
-			echo '<div class="reviews_box">
-	  	<a href="'.$value.'" class="name_link" target="_blank">'.$fields[$key].'</a>
-	  	<div class="reviews_count"><span id="reviews_count_'.$key.'">';
-		
-		if($key != 'google_maps')
-		{
-			echo '<iframe src="http://'.$payment_domain.'/reviews_counter/'.$key.'.php?url='.str_replace('#', '---', str_replace('?', '___', str_replace('&', '__', $value))).'&domain='.str_replace('www.', '', $_SERVER['HTTP_HOST']).'" height="17px" width="40px" scrolling="no" style="border:0px"></iframe>';
-		}
-		else
-		{
-			echo '<iframe src="'.plugins_url().'/google-reviews-counter-generator/google_maps.php" height="17px" width="40px" scrolling="no" style="border:0px"></iframe>';
-		}
-		
-		echo '</span><br>
-<font size="2" color="#ff6600" style="font-size: 13px;">reviews</font></div>
-	  </div>';
-		}
-		echo '</div>
-	<p style="font-family:Arial, Helvetica, sans-serif; font-size:10px; text-align:center;line-height:0px;padding-bottom:0px">&nbsp;&nbsp;&nbsp;</p>
-</div>';
-    	//echo $args['after_widget'];
-  	}
-  	function register()
-	{
-    	register_sidebar_widget('Google Reviews Counter', array('Widget_name', 'widget'));
-    	register_widget_control('Google Reviews Counter', array('Widget_name', 'control'));
+			echo '
+			</div>
+		</div>';
   	}
 }
+add_action( 'widgets_init', create_function('', 'return register_widget("GoogleReviewsCounterWidget");') );?>
