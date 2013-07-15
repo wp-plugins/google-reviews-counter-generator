@@ -3,8 +3,8 @@ Contributors: meganiche
 Donate link: https://www.paypal.com/us/cgi-bin/webscr?cmd=_flow&SESSION=QJhG81YrmuzQizsvJZap3OsSHxpeiXZ2gHMWoAuFItx2CUt4C25Cxws4jju&dispatch=5885d80a13c0db1f8e263663d3faee8d7283e7f0184a5674430f290db9e9c846
 Tags: google reviews, counter generator, google, reviews, counter, generator
 Requires at least: 3.3
-Tested up to: 2.0
-Stable tag: 2.0
+Tested up to: 3.4
+Stable tag: 4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,7 +48,7 @@ Yes it does. Google Plus is slowly taking over google maps and all existing revi
 
 == Changelog ==
 
-Version 2.0 is our first public release
+Version 2.1 is our second public release
 
 == Upgrade notice ==
 

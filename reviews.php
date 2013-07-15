@@ -14,7 +14,7 @@ Plugin URI: http://meganicheuniversity.com/wordpress-plugins
 
 Description: Plugin to count reviews.
 
-Version: 2.0
+Version: 2.1
 
 Author: MegaNiche
 
@@ -333,14 +333,14 @@ class GoogleReviewsCounterWidget extends WP_Widget
 					<a href="'.$value.'" target="_blank"><img src="'.plugins_url().'/google-reviews-counter-generator/logos/'.$key.(($size=='130')?'_s':'_m').'.jpg" /></a>
 					<P><div class="rev_cnt"><span class="rev_txt"><a  href="'.$value.'" target="_blank" id="reviews_count_'.$key.'">Reviews</a></span><span class="rev_num">';
 			
-					if($key != 'google_maps')
-					{
-						echo '<iframe src="http://'.$payment_domain.'/reviews_counter/'.$key.'.php?url='.str_replace('#', '---', str_replace('?', '___', str_replace('&', '__', $value))).'&domain='.str_replace('www.', '', $_SERVER['HTTP_HOST']).'" height="17px" width="'.(($size=='250')?'37':'23').'px" scrolling="no" style="border:0px;"></iframe>';
-					}
-					else
-					{
-						echo '<iframe src="'.plugins_url().'/google-reviews-counter-generator/google_maps.php" height="17px" width="'.(($size=='250')?'37':'23').'px" scrolling="no" style="border:0px"></iframe>';
-					}
+					/*if($key != 'google_maps')
+					{*/
+						echo '<iframe src="http://'.$payment_domain.'/reviews_counter/'.$key.'.php?url='.str_replace('http', '-_-_-', str_replace('#', '---', str_replace('?', '___', str_replace('&', '__', $value)))).'&domain='.str_replace('www.', '', $_SERVER['HTTP_HOST']).'" height="17px" width="'.(($size=='250')?'37':'23').'px" scrolling="no" style="border:0px;"></iframe>';
+					//}
+					//else
+					//{
+					//	echo '<iframe src="'.plugins_url().'/google-reviews-counter-generator/google_maps.php" height="17px" width="'.(($size=='250')?'37':'23').'px" scrolling="no" style="border:0px"></iframe>';
+					//}
 					
 					echo '</span></div></P>
 				</div>';
