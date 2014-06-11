@@ -14,7 +14,7 @@ Plugin URI: http://meganicheuniversity.com/wordpress-plugins
 
 Description: Plugin to count reviews.
 
-Version: 2.1
+Version: 3.0
 
 Author: MegaNiche
 
@@ -124,7 +124,7 @@ function plugin_menu_page()
 		$conf = mysql_fetch_object($conf);
 		if(!($conf->active == '1'))
 	 	{
-			echo '<a href="http://'.$payment_domain.'/reviews_counter/pay.php?domain='.str_replace('http://', '', str_replace('www.', '', $_SERVER['HTTP_HOST'])).'&site_url='.str_replace('http://', '', str_replace('www.', '', get_option('siteurl'))).'" target="_blank" style="border: 1px solid rgb(187, 187, 187); padding: 4px; border-radius: 4px 4px 4px 4px; text-decoration: none;">Upgrade</a>&nbsp;&nbsp;Want access to all? Upgrade for $5'; 
+			echo '<a href="http://'.$payment_domain.'/reviews_counter/pay.php?domain='.str_replace('http://', '', str_replace('www.', '', $_SERVER['HTTP_HOST'])).'&site_url='.str_replace('http://', '', str_replace('www.', '', get_option('siteurl'))).'" target="_blank" style="border: 1px solid rgb(187, 187, 187); padding: 4px; border-radius: 4px 4px 4px 4px; text-decoration: none;">Upgrade</a>&nbsp;&nbsp;Want access to all? Upgrade for $20'; 
 		}
 
 		$fields = array(
