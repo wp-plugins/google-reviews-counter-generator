@@ -331,21 +331,13 @@ class GoogleReviewsCounterWidget extends WP_Widget
 				echo '
 				<div class="content_review_row">
 					<a href="'.$value.'" target="_blank"><img src="'.plugins_url().'/google-reviews-counter-generator/logos/'.$key.(($size=='130')?'_s':'_m').'.jpg" /></a>
-					<P><div class="rev_cnt"><span class="rev_txt"><a  href="'.$value.'" target="_blank" id="reviews_count_'.$key.'">Reviews</a></span><span class="rev_num">';
-			
-					/*if($key != 'google_maps')
-					{*/
+					<p><div class="rev_cnt"><span class="rev_txt"><a  href="'.$value.'" target="_blank" id="reviews_count_'.$key.'">Reviews</a></span><span class="rev_num">';
 						echo '<iframe src="http://'.$payment_domain.'/reviews_counter/'.$key.'.php?url='.str_replace('http', '-_-_-', str_replace('#', '---', str_replace('?', '___', str_replace('&', '__', $value)))).'&domain='.str_replace('www.', '', $_SERVER['HTTP_HOST']).'" height="17px" width="'.(($size=='250')?'37':'23').'px" scrolling="no" style="border:0px;"></iframe>';
-					//}
-					//else
-					//{
-					//	echo '<iframe src="'.plugins_url().'/google-reviews-counter-generator/google_maps.php" height="17px" width="'.(($size=='250')?'37':'23').'px" scrolling="no" style="border:0px"></iframe>';
-					//}
-					
-					echo '</span></div></P>
+					echo '</span></div></p>
 				</div>';
 			}
 			echo '
+<div style="float: left;padding: 5px;width: 100%;"><a target="_blank" style="font-size: 12px;margin-right: 15px;float: right;text-decoration:none;" href="http://meganicheuniversity.com/wordpress-plugins">Google Reviews</a></div>
 			</div>
 		</div>';
   	}
